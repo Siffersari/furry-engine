@@ -1,59 +1,73 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.join(__dirname, '/dist'),
-    filename: 'index_bundle.js',
+    path: path.join(__dirname, "/dist"),
+    filename: "index_bundle.js"
   },
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
-        },
+          loader: "babel-loader"
+        }
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"]
       },
       {
         test: /\.svg$/,
-        loader: 'svg-inline-loader',
+        loader: "svg-inline-loader"
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: '[name].[ext]',
-              outputPath: 'fonts/',
-            },
-          },
-        ],
+              name: "[name].[ext]",
+              outputPath: "fonts/"
+            }
+          }
+        ]
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
-          'file-loader',
+          "file-loader",
           {
-            loader: 'image-webpack-loader',
+            loader: "image-webpack-loader",
             options: {
               bypassOnDebug: true,
-              disable: true,
-            },
-          },
-        ],
+              disable: true
+            }
+          }
+        ]
       },
-    ],
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          "sass-loader"
+        ]
+      }
+    ]
+  },
+  resolve: {
+    extensions: ["*", ".js", ".jsx"]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-    }),
-  ],
+      template: "./src/index.html"
+    })
+  ]
 };
